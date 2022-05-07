@@ -2,8 +2,10 @@ Author: Dominick Yacono
 
 Data Scientist Role Play: Profiling and Analyzing a Yelp Dataset 
 – Project provided by UCDavis’ SQL for Data Science class on Coursera – 
+
 This worksheet uses a dataset from a US-based organization called Yelp, which provides a platform for users to provide reviews and rate their interactions with a variety of organizations – businesses, restaurants, health clubs, hospitals, local governmental offices, charitable organizations, etc. 
 Yelp has made a portion of this data available for personal, educational, and academic purposes.
+
 The following is a series of questions regarding the data.
 
 Part 1: Yelp Dataset Profiling and Understanding
