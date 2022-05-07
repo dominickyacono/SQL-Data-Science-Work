@@ -45,6 +45,7 @@ Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.
 Sample code:
 select COUNT(distinct id )
 from business
+
 *(followed this format for all tables, taking into account whether to count primary or foreign keys)
 
 
@@ -54,7 +55,8 @@ from business
 	
 	
 	SQL code used to arrive at answer:
-	select 
+	
+    select 
     sum(case when id is null then 1 else 0 end) as id_nulls, 
     sum(case when name is null then 1 else 0 end) as name_nulls, 
     sum(case when review_count is null then 1 else 0 end) as review_count_nulls,
@@ -75,7 +77,7 @@ from business
     sum(case when compliment_funny is null then 1 else 0 end) as compliment_funny_nulls,
     sum(case when compliment_writer is null then 1 else 0 end) as compliment_writer_nulls,
     sum(case when compliment_photos is null then 1 else 0 end) as compliment_photos_nulls
-from user
+    from user
 
 	
 
@@ -112,13 +114,14 @@ From Tip;
 
 5. List the cities with the most reviews in descending order:
 
-	SQL code used to arrive at answer:
-	select city, Count(city)
+SQL code used to arrive at answer:
+	
+select city, Count(city)
 from business
 GROUP BY city
 ORDER BY Count(city) desc 
 
-	Copy and Paste the Result Below:
+Copy and Paste the Result Below:
 +-----------------+-------------+
 | city            | Count(city) |
 +-----------------+-------------+
@@ -156,6 +159,7 @@ ORDER BY Count(city) desc
 i. Avon
 
 SQL code used to arrive at answer:
+
 select stars, COUNT(stars)
 from business
 where city = 'Avon'
@@ -176,6 +180,7 @@ Copy and Paste the Resulting Table Below (2 columns â€“ star rating and cou
 ii. Beachwood
 
 SQL code used to arrive at answer:
+
 select stars, COUNT(stars)
 from business
 where city = 'Beachwood'
@@ -198,14 +203,15 @@ Copy and Paste the Resulting Table Below (2 columns â€“ star rating and cou
 
 7. Find the top 3 users based on their total number of reviews:
 		
-	SQL code used to arrive at answer:
-	select id, name, review_count
+SQL code used to arrive at answer:
+
+select id, name, review_count
 from user
 ORDER BY review_count desc
 Limit 3
 
 		
-	Copy and Paste the Result Below:
+Copy and Paste the Result Below:
 +------------------------+--------+--------------+
 | id                     | name   | review_count |
 +------------------------+--------+--------------+
@@ -223,6 +229,7 @@ Please explain your findings and interpretation of the results:
 No. There are a fair number of users with few reviews but lots of fans. For example, Angela has 694 reviews and 101 fans while Nicole has 864 reviews but only 43 fans.
 
 SQL code used to arrive at answer:
+
 select name, review_count, fans
 from user
 order by review_count desc;
@@ -261,21 +268,25 @@ order by review_count desc;
 	
 9. Are there more reviews with the word "love" or with the word "hate" in them?
 
-	Answer: More reviews with the word “love”.
+Answer: More reviews with the word “love”.
 	
-	SQL code used to arrive at answer:
-	Select count (*) as "Reviews with word: love"
+SQL code used to arrive at answer:
+
+Select count (*) as "Reviews with word: love"
 from review
 where text like '%love%';
+
 +-----------+
 | count (*) |
 +-----------+
 |      1780 |
 +-----------+
+
 select
 count (*) as "Reviews with word: hate"
 from review
 where text like '%hate%';
+
 +-----------+
 | count (*) |
 +-----------+
@@ -286,6 +297,7 @@ where text like '%hate%';
 10. Find the top 10 users with the most fans:
 
 SQL code used to arrive at answer:
+
 select id, name, fans
 from user
 ORDER BY fans desc
@@ -316,13 +328,13 @@ Category: Food
 City: Phoenix
 
 2 - 3 stars:
+
 select business.name, business.city, category.category, business.stars, hours.hours, business.review_count
 from business
 inner join category on business.id = category.business_id
 inner join hours on category.business_id = hours.business_id
 where city = 'Phoenix' AND category = 'Food' AND business.stars >= 2 AND business.stars <= 3
 GROUP BY business.stars
- 
  
 +-----------+---------+----------+-------+---------------------+--------------+
 | name      | city    | category | stars | hours               | review_count |
@@ -331,6 +343,7 @@ GROUP BY business.stars
 +-----------+---------+----------+-------+---------------------+--------------+
 
 4 - 5 stars:
+
 select business.name, business.city, category.category, business.stars, hours.hours, business.review_count
 from business
 inner join category on business.id = category.business_id
@@ -364,8 +377,7 @@ i. Difference 1: Restaurants that are still open have higher average stars.
 select AVG(business.stars), business.is_open
 from business
 GROUP BY is_open
-         
-         
+             
 ii. Difference 2: Restaurants with a higher review count are more likely to be open.
 
 +---------+----------------------------+
@@ -391,17 +403,8 @@ ii. Write 1-2 brief paragraphs on the type of data you will need for your analys
 Analysis 1: To conduct this analysis, I needed to collect data from the review table. I used SQL’s wildcard text analysis feature to determine customer sentiment through the text reviews. I counted the number of reviews with “good” sentiment and those with “bad” sentiment and grouped them depending on the star rating tied to the review. 
 Analysis 2: I collected data from the review and the business tables, conducting an inner join on review’s business_id and business’ id. I chose data from these two tables to uncover the relationship between star ratings and average business ratings.  
 Analysis 3: I collected data from the review and the business tables, conducting an inner join on review’s business_id and business’ id. I chose data from these two tables to uncover the relationship between star ratings and the likelihood of the business still being open. 
-iii. Output of your finished dataset:
-+-----------------------------+-------------------------------------------------------+--------------------------------------------------------+---------------------------------------------------+-----------------------------------------------------+
-| review rating from customer | Average rating of the business person gave rating for | Business that are still open that received this rating | number of reviews where text shows good sentiment |  number of reviewers where text shows bad sentiment |
-+-----------------------------+-------------------------------------------------------+--------------------------------------------------------+---------------------------------------------------+-----------------------------------------------------+
-|                           1 |                                         3.02906976744 |                                                     86 |                                                 0 |                                                  11 |
-|                           2 |                                         3.46153846154 |                                                     52 |                                                 2 |                                                   3 |
-|                           3 |                                         3.55479452055 |                                                     73 |                                                 2 |                                                   3 |
-|                           4 |                                         3.65666666667 |                                                    150 |                                                19 |                                                   2 |
-|                           5 |                                         4.10181818182 |                                                    275 |                                                44 |                                                   0 |
-+-----------------------------+-------------------------------------------------------+--------------------------------------------------------+---------------------------------------------------+-----------------------------------------------------+
 
+iii. Output of your finished dataset:
 Analysis 1:
 +-----------------------------+---------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
 | review rating from customer | number of reviews where text shows good sentiment | number of reviewers where text shows bad sentiment | Ratio of good sentiment reviews to bad sentiment reviews |
@@ -435,7 +438,9 @@ Analysis 3:
 
 
 iv. Provide the SQL code you used to create your final dataset:
-Analysis 1: 	
+
+Analysis 1: 
+
 select
 review.stars AS 'review rating from customer',
 SUM (CASE WHEN text like '%amazing%' then 1 ELSE 0 END) AS 'number of reviews where text shows good sentiment', 
@@ -443,14 +448,18 @@ SUM (CASE WHEN text LIKE '%horrible%' then 1 ELSE 0 END) AS 'number of reviewers
 SUM (CASE WHEN text like '%amazing%' then 1 ELSE 0 END)/SUM (CASE WHEN text LIKE '%horrible%' then 1 ELSE 0 END) AS 'Ratio of good sentiment reviews to bad sentiment reviews'
 from review
 GROUP BY review.stars
+
 Analysis 2:
+
 select
 review.stars AS 'review rating from customer',
 AVG(business.stars) AS 'Average rating of the business person gave rating for'
 from review
 INNER JOIN business ON review.business_id = business.id
 GROUP BY review.stars
+
 Analysis 3:
+
 select
 review.stars AS 'review rating from customer',
 COUNT(business.is_open) AS 'Business that are still open that received this rating'
